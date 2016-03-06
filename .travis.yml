@@ -1,4 +1,11 @@
 language: go
 
+sudo: false
+
 go:
   - tip
+
+script: go test -v -bench=. -cover    
+
+notifications:
+    email: false
