@@ -1,4 +1,4 @@
-#store [![GoDoc](https://godoc.org/jung/store?status.png)](https://godoc.org/jung/store)
+#store [![GoDoc](https://godoc.org/github.com/piniondb/store?status.png)](https://godoc.org/github.com/piniondb/store)
 
 Package store helps applications convert structured data quickly to and from
 compact byte sequences.
