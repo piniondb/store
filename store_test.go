@@ -184,7 +184,7 @@ func jsonBufToRec(sl []byte) (rec all, err error) {
 	return
 }
 
-// ExampleGetBuffer demonsrates basic packing and unpacking of a structure.
+// ExampleGetBuffer demonstrates basic packing and unpacking of a structure.
 func ExampleGetBuffer() {
 	var rec all
 	var recBuf []byte
@@ -264,7 +264,7 @@ func ExampleGetBuffer() {
 	// Original structure is the same as the restored structure
 }
 
-// Write a hexadecimal represention of the byte slice to the specified writer.
+// Write a hexadecimal representation of the byte slice to the specified writer.
 func out(w io.Writer, sl []byte) {
 	slen := len(sl)
 	for pos := 0; pos < slen; pos += 16 {
