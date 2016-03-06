@@ -28,7 +28,7 @@ import (
 	"testing"
 	"time"
 
-	"jung/store"
+	"github.com/piniondb/store"
 )
 
 var (
