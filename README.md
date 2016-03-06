@@ -1,7 +1,7 @@
 #store 
 
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/piniondb/store/master/LICENSE)
-[![GoDoc](https://godoc.org/github.com/piniondb/store?status.png)](https://godoc.org/github.com/piniondb/store)
+[![GoDoc](https://godoc.org/github.com/piniondb/store?status.svg)](https://godoc.org/github.com/piniondb/store)
 
 Package store helps applications convert structured data quickly to and from
 compact byte sequences.
