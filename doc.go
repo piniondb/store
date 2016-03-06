@@ -64,7 +64,8 @@ structure definition. You can enhance the generality of your code by using
 these conversion functions to implement the encoding.MarshalBinary and
 encoding.UnmarshalBinary interfaces.
 
-See the Go documentation for more complete examples.
+See the Go documentation for more complete examples, including the conversion
+of slice and map fields.
 
 Installation
 
@@ -87,9 +88,11 @@ error to the buffer instance by calling its SetError() method.
 
 Benchmarks
 
-The following comparison unquestionably involves an apple and an orange.
-However, if your application does not require the flexibility of JSON, store
-encoding may be a viable option for it.
+The following comparison shows how much faster the piniondb/store package is
+than the encoding/json package in converting a structure to a byte slice and
+back again. It unquestionably involves an apple and an orange since the JSON
+encoded value is self-describing. However, if your application does not require
+the flexibility of JSON, store encoding may be a fast and viable option for it.
 
 	BenchmarkJSONRoundtrip-2           30000             53022 ns/op            2408 B/op         56 allocs/op
 	BenchmarkStoreRoundtrip-2         200000              7323 ns/op             960 B/op         21 allocs/op
