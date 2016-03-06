@@ -77,6 +77,15 @@ called. For the same reason, if an error occurs in the calling application
 during conversion, it may be desirable for the application to transfer the
 error to the buffer instance by calling its SetError() method.
 
+##Keys
+
+A byte sequence that is used as a key must be sortable. The store package
+provides a KeyBuffer to handle this case. Unlike the PutBuffer and GetBuffer
+types, a KeyBuffer packs fields, including strings, into fixed length segments.
+Signed integers are handled by using excess representation in which the lowest
+negative value has all bits clear and the highest positive value has all bits
+set.
+
 ##Benchmarks
 
 The following comparison shows how much faster the piniondb/store package is
