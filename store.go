@@ -477,7 +477,7 @@ func (put PutBuffer) Error() error {
 
 // SetError permits the caller to assign an error value to the get buffer. In
 // some cases, this may simplify record unpacking by deferring the handling of
-// an error to the point at which Bytes() is called. This method
+// an error to the point at which Done() is called. This method
 // unconditionally overwrites the current internal error value.
 func (get *GetBuffer) SetError(err error) {
 	get.err = err
