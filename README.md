@@ -1,7 +1,5 @@
 #store [![GoDoc](https://godoc.org/jung/store?status.png)](https://godoc.org/jung/store)
 
-Package store helps applications convert structured data quickly to and from compact byte sequences.
-
 Package store helps applications convert structured data quickly to and from
 compact byte sequences.
 
