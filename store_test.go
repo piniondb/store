@@ -32,8 +32,8 @@ import (
 )
 
 var (
-	testErr  = errors.New("test error")
-	testTime = time.Date(1997, time.November, 28, 12, 0, 0, 0, time.UTC)
+	errTest  = errors.New("test error")
+	timeTest = time.Date(1997, time.November, 28, 12, 0, 0, 0, time.UTC)
 )
 
 type sub struct {
@@ -71,7 +71,7 @@ func recPopulate(r *all) {
 	r.U8 = 212
 	r.S8 = -34
 	r.S = "example"
-	r.T = testTime
+	r.T = timeTest
 	r.Sl = make([]sub, 3)
 	r.Sl[0].U64 = 123
 	r.Sl[0].S8 = 2
@@ -96,12 +96,12 @@ func (r all) String() string {
 	for _, sub := range r.Sl {
 		fmt.Fprintf(&b, "%d;%d;", sub.U64, sub.S8)
 	}
-	var kList []string
+	var keyList []string
 	for k := range r.Mp {
-		kList = append(kList, k)
+		keyList = append(keyList, k)
 	}
-	sort.Strings(kList)
-	for _, k := range kList {
+	sort.Strings(keyList)
+	for _, k := range keyList {
 		fmt.Fprintf(&b, "%s:%s;", k, r.Mp[k])
 	}
 	return b.String()
@@ -139,7 +139,7 @@ func storeRecToBuf(rec all) ([]byte, error) {
 // from the store package.
 func storeBufToRec(data []byte) (rec all, err error) {
 	var slen uint16
-	var kStr, vStr string
+	var keyStr, valStr string
 	var get = store.NewGetBuffer(data)
 	// Unpack buffer into new structure
 	get.Uint64(&rec.U64)
@@ -163,9 +163,9 @@ func storeBufToRec(data []byte) (rec all, err error) {
 	get.Uint16(&slen)
 	rec.Mp = make(map[string]string)
 	for j := uint16(0); j < slen; j++ {
-		get.Str(&kStr)
-		get.Str(&vStr)
-		rec.Mp[kStr] = vStr
+		get.Str(&keyStr)
+		get.Str(&valStr)
+		rec.Mp[keyStr] = valStr
 	}
 	err = get.Done()
 	return
@@ -218,7 +218,7 @@ func ExampleGetBuffer() {
 	if err == nil {
 		var newRec all
 		var slen uint16
-		var kStr, vStr string
+		var keyStr, valStr string
 		var get = store.NewGetBuffer(recBuf)
 		// Unpack buffer into new structure
 		get.Uint64(&newRec.U64)
@@ -242,9 +242,9 @@ func ExampleGetBuffer() {
 		get.Uint16(&slen)
 		newRec.Mp = make(map[string]string)
 		for j := uint16(0); j < slen; j++ {
-			get.Str(&kStr)
-			get.Str(&vStr)
-			newRec.Mp[kStr] = vStr
+			get.Str(&keyStr)
+			get.Str(&valStr)
+			newRec.Mp[keyStr] = valStr
 		}
 		err = get.Done()
 		if err == nil {
@@ -280,7 +280,7 @@ func out(w io.Writer, sl []byte) {
 // fixed-length comparable values.
 func ExampleKeyBuffer() {
 	var kb store.KeyBuffer
-	kb.Time(testTime)
+	kb.Time(timeTest)
 	kb.Uint64(3565123234760)
 	kb.Int64(-50496192383)
 	kb.Uint32(5470129)
@@ -474,7 +474,7 @@ func TestPutBuffer_Compare(t *testing.T) {
 func TestPutBuffer_Error(t *testing.T) {
 	put := store.NewPutBuffer()
 	put.Int8(-2)
-	put.SetError(testErr)
+	put.SetError(errTest)
 	sl, err := put.Bytes()
 	if sl != nil || err == nil {
 		t.Fatal("PutBuffer error not reported")
@@ -487,7 +487,7 @@ func TestPutBuffer_Error(t *testing.T) {
 // Ensure that error in get buffer loading is reported
 func TestGetBuffer_Error(t *testing.T) {
 	get := store.NewGetBuffer([]byte{0, 0, 0})
-	get.SetError(testErr)
+	get.SetError(errTest)
 	if get.Error() == nil {
 		t.Fatal("GetBuffer error not reported in call to Error()")
 	}
@@ -516,7 +516,7 @@ func TestGetBuffer_Leftover(t *testing.T) {
 func TestKeyBuffer_Error(t *testing.T) {
 	var kb store.KeyBuffer
 	kb.Uint32(3)
-	kb.SetError(testErr)
+	kb.SetError(errTest)
 	sl, err := kb.Bytes()
 	if sl != nil || err == nil {
 		t.Fatal("KeyBuffer error not reported")

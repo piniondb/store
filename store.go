@@ -24,7 +24,7 @@ import (
 	"time"
 )
 
-var nonemptyErr = errors.New("the get buffer has not been completely emptied")
+var errNonempty = errors.New("the get buffer has not been completely emptied")
 
 // KeyUint64 returns a comparable eight byte slice representation of val
 // suitable for use in keys.
@@ -487,7 +487,7 @@ func (get *GetBuffer) SetError(err error) {
 func (get GetBuffer) Done() error {
 	if get.err == nil {
 		if get.buf.Len() > 0 {
-			get.err = nonemptyErr
+			get.err = errNonempty
 		}
 	}
 	return get.err
