@@ -42,7 +42,7 @@ Example
 Use a store.PutBuffer to pack individual values (either standalone or members
 of a structure) into a byte sequence. For example,
 
-    put := store.NewPutBuffer()
+	var put store.PutBuffer
 	put.Uint32(a)
 	put.Int64(b)
 	data, err := put.Bytes()
@@ -50,7 +50,7 @@ of a structure) into a byte sequence. For example,
 where a is of type uint32 and b is of type int64. To retrieve these values from
 the byte slice, use a store.GetBuffer:
 
-    get := store.NewGetBuffer(data)
+	get := store.NewGetBuffer(data)
 	get.Uint32(&a)
 	get.Int64(&b)
 	err := get.Done()

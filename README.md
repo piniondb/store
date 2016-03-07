@@ -30,7 +30,7 @@ Use a store.PutBuffer to pack individual values (either standalone or members
 of a structure) into a byte sequence. For example,
 
 ```
-	put := store.NewPutBuffer()
+	var put store.PutBuffer
 	put.Uint32(a)
 	put.Int64(b)
 	data, err := put.Bytes()
