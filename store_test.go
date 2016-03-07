@@ -110,8 +110,8 @@ func (r all) String() string {
 // storeRecToBuf packs all record fields into a byte slice using a put buffer
 // from the store package.
 func storeRecToBuf(rec all) ([]byte, error) {
+	var put store.PutBuffer
 	// Pack structure into buffer
-	put := store.NewPutBuffer()
 	put.Uint64(rec.U64)
 	put.Int64(rec.S64)
 	put.Uint32(rec.U32)
@@ -189,11 +189,11 @@ func ExampleGetBuffer() {
 	var rec all
 	var recBuf []byte
 	var err error
+	var put store.PutBuffer
 	var originalStr, restoredStr string
 	recPopulate(&rec)
 	// Pack structure into buffer
 	originalStr = rec.String()
-	var put = store.NewPutBuffer()
 	put.Uint64(rec.U64)
 	put.Int64(rec.S64)
 	put.Uint32(rec.U32)
@@ -472,7 +472,7 @@ func TestPutBuffer_Compare(t *testing.T) {
 
 // Ensure that error in put buffer loading is reported
 func TestPutBuffer_Error(t *testing.T) {
-	put := store.NewPutBuffer()
+	var put store.PutBuffer
 	put.Int8(-2)
 	put.SetError(errTest)
 	sl, err := put.Bytes()
@@ -495,7 +495,7 @@ func TestGetBuffer_Error(t *testing.T) {
 
 // Ensure that error leftover content in buffer is reported
 func TestGetBuffer_Leftover(t *testing.T) {
-	put := store.NewPutBuffer()
+	var put store.PutBuffer
 	put.Uint32(5)
 	put.Uint32(8)
 	data, err := put.Bytes()

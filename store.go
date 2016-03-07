@@ -75,7 +75,8 @@ func KeyInt8(val int8) byte {
 }
 
 // KeyBuffer facilitates the storage of one or more fields to be used in
-// comparable, fixed-length index keys.
+// comparable, fixed-length index keys. The zero value for a variable of type
+// KeyBuffer is ready to use.
 type KeyBuffer struct {
 	buf bytes.Buffer
 	err error
@@ -234,7 +235,8 @@ func vlsDecode(buf *bytes.Buffer) (val int64, err error) {
 // }
 
 // PutBuffer facilitates the packing of structures so that they can implement
-// the encoding.BinaryMarshaler interface.
+// the encoding.BinaryMarshaler interface. The zero value for a variable of
+// type PutBuffer is ready to use.
 type PutBuffer struct {
 	buf bytes.Buffer
 	err error
@@ -245,13 +247,6 @@ type PutBuffer struct {
 type GetBuffer struct {
 	buf bytes.Buffer
 	err error
-}
-
-// NewPutBuffer returns an initialized buffer that can be used to construct a
-// byte slice representation of a variety of values.
-func NewPutBuffer() (put *PutBuffer) {
-	put = new(PutBuffer)
-	return
 }
 
 // NewGetBuffer returns an initialized buffer that can be used to extract
