@@ -276,9 +276,9 @@ func out(w io.Writer, sl []byte) {
 	}
 }
 
-// ExampleKeyBuffer_Build demonstrates building up a key composed with various
+// ExampleKeyBuffer_build demonstrates building up a key composed with various
 // fixed-length comparable values.
-func ExampleKeyBuffer_Build() {
+func ExampleKeyBuffer_build() {
 	var kb store.KeyBuffer
 	kb.Time(timeTest)
 	kb.Uint64(3565123234760)
@@ -316,9 +316,9 @@ func (r simple) String() string {
 	return fmt.Sprintf("%15d | %12d | %4d | %-10s", r.a, r.b, r.c, r.d)
 }
 
-// ExampleKeyBuffer demonstrates the comparability of keys built up with
+// ExampleKeyBuffer_sort demonstrates the comparability of keys built up with
 // KeyBuffer methods.
-func ExampleKeyBuffer_Sort() {
+func ExampleKeyBuffer_sort() {
 	var keyStr string
 	var keyList []string
 	var sl []byte
