@@ -276,9 +276,9 @@ func out(w io.Writer, sl []byte) {
 	}
 }
 
-// ExampleKeyBuffer demonstrates building up a key composed with various
+// ExampleKeyBuffer_Build demonstrates building up a key composed with various
 // fixed-length comparable values.
-func ExampleKeyBuffer() {
+func ExampleKeyBuffer_Build() {
 	var kb store.KeyBuffer
 	kb.Time(timeTest)
 	kb.Uint64(3565123234760)

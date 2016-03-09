@@ -26,51 +26,51 @@ import (
 
 var errNonempty = errors.New("the get buffer has not been completely emptied")
 
-// KeyUint64 returns a comparable eight byte slice representation of val
+// keyUint64 returns a comparable eight byte slice representation of val
 // suitable for use in keys.
-func KeyUint64(val uint64) (sl []byte) {
+func keyUint64(val uint64) (sl []byte) {
 	sl = make([]byte, 8)
 	binary.BigEndian.PutUint64(sl, val)
 	return
 }
 
-// KeyInt64 returns a comparable eight byte slice representation of val
+// keyInt64 returns a comparable eight byte slice representation of val
 // suitable for use in keys.
-func KeyInt64(val int64) (sl []byte) {
-	return KeyUint64(uint64(val) + 1<<63)
+func keyInt64(val int64) (sl []byte) {
+	return keyUint64(uint64(val) + 1<<63)
 }
 
-// KeyUint32 returns a comparable four byte slice representation of val
+// keyUint32 returns a comparable four byte slice representation of val
 // suitable for use in keys.
-func KeyUint32(val uint32) (sl []byte) {
+func keyUint32(val uint32) (sl []byte) {
 	sl = make([]byte, 4)
 	binary.BigEndian.PutUint32(sl, val)
 	return
 }
 
-// KeyInt32 returns a comparable four byte slice representation of val suitable
+// keyInt32 returns a comparable four byte slice representation of val suitable
 // for use in keys.
-func KeyInt32(val int32) (sl []byte) {
-	return KeyUint32(uint32(val) + 1<<31)
+func keyInt32(val int32) (sl []byte) {
+	return keyUint32(uint32(val) + 1<<31)
 }
 
-// KeyUint16 returns a comparable two byte slice representation of val suitable
+// keyUint16 returns a comparable two byte slice representation of val suitable
 // for use in keys.
-func KeyUint16(val uint16) (sl []byte) {
+func keyUint16(val uint16) (sl []byte) {
 	sl = make([]byte, 2)
 	binary.BigEndian.PutUint16(sl, val)
 	return
 }
 
-// KeyInt16 returns a comparable two byte slice representation of val suitable
+// keyInt16 returns a comparable two byte slice representation of val suitable
 // for use in keys.
-func KeyInt16(val int16) (sl []byte) {
-	return KeyUint16(uint16(val) + 1<<15)
+func keyInt16(val int16) (sl []byte) {
+	return keyUint16(uint16(val) + 1<<15)
 }
 
-// KeyInt8 returns a comparable 1 byte representation of val suitable
+// keyInt8 returns a comparable 1 byte representation of val suitable
 // for use in keys.
-func KeyInt8(val int8) byte {
+func keyInt8(val int8) byte {
 	return uint8(val) + 1<<7
 }
 
@@ -98,42 +98,42 @@ func (kb *KeyBuffer) write(sl []byte) {
 // Time stores the specified time.Time value into the receiving key
 // buffer.
 func (kb *KeyBuffer) Time(tm time.Time) {
-	kb.write(KeyInt64(tm.Unix()))
+	kb.write(keyInt64(tm.Unix()))
 }
 
 // Uint64 stores the specified uint64 value into the receiving key
 // buffer.
 func (kb *KeyBuffer) Uint64(val uint64) {
-	kb.write(KeyUint64(val))
+	kb.write(keyUint64(val))
 }
 
 // Int64 stores the specified int64 value into the receiving key buffer.
 func (kb *KeyBuffer) Int64(val int64) {
-	kb.write(KeyInt64(val))
+	kb.write(keyInt64(val))
 }
 
 // Uint32 stores the specified uint32 value into the receiving key
 // buffer.
 func (kb *KeyBuffer) Uint32(val uint32) {
-	kb.write(KeyUint32(val))
+	kb.write(keyUint32(val))
 }
 
 // Int32 stores the specified int32 value into the receiving key
 // buffer.
 func (kb *KeyBuffer) Int32(val int32) {
-	kb.write(KeyInt32(val))
+	kb.write(keyInt32(val))
 }
 
 // Uint16 stores the specifed uint16 value into the receiving key
 // buffer.
 func (kb *KeyBuffer) Uint16(val uint16) {
-	kb.write(KeyUint16(val))
+	kb.write(keyUint16(val))
 }
 
 // Int16 stores the specifed int16 value into the receiving key
 // buffer.
 func (kb *KeyBuffer) Int16(val int16) {
-	kb.write(KeyInt16(val))
+	kb.write(keyInt16(val))
 }
 
 // Uint8 stores the specified uint8 value into the receiving key buffer.
@@ -145,7 +145,7 @@ func (kb *KeyBuffer) Uint8(val uint8) {
 
 // Int8 stores the specified int8 value into the receiving key buffer.
 func (kb *KeyBuffer) Int8(val int8) {
-	kb.Uint8(KeyInt8(val))
+	kb.Uint8(keyInt8(val))
 }
 
 // Str stores the specifed string value into the receiving key buffer.
