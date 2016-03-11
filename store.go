@@ -124,13 +124,13 @@ func (kb *KeyBuffer) Int32(val int32) {
 	kb.write(keyInt32(val))
 }
 
-// Uint16 stores the specifed uint16 value into the receiving key
+// Uint16 stores the specified uint16 value into the receiving key
 // buffer.
 func (kb *KeyBuffer) Uint16(val uint16) {
 	kb.write(keyUint16(val))
 }
 
-// Int16 stores the specifed int16 value into the receiving key
+// Int16 stores the specified int16 value into the receiving key
 // buffer.
 func (kb *KeyBuffer) Int16(val int16) {
 	kb.write(keyInt16(val))
@@ -148,7 +148,7 @@ func (kb *KeyBuffer) Int8(val int8) {
 	kb.Uint8(keyInt8(val))
 }
 
-// Str stores the specifed string value into the receiving key buffer.
+// Str stores the specified string value into the receiving key buffer.
 // It will be either truncated or space-filled to the length specified by
 // width.
 func (kb *KeyBuffer) Str(str string, width uint) {
@@ -366,7 +366,7 @@ func (get *GetBuffer) Int32(val *int32) {
 	}
 }
 
-// Uint16 packs the specifed uint16 value into the receiving storage
+// Uint16 packs the specified uint16 value into the receiving storage
 // buffer.
 func (put *PutBuffer) Uint16(val uint16) {
 	put.vluEncode(uint64(val))
@@ -383,7 +383,7 @@ func (get *GetBuffer) Uint16(val *uint16) {
 	}
 }
 
-// Int16 packs the specifed int16 value into the receiving storage
+// Int16 packs the specified int16 value into the receiving storage
 // buffer.
 func (put *PutBuffer) Int16(val int16) {
 	put.vlsEncode(int64(val))
@@ -432,7 +432,7 @@ func (get *GetBuffer) Int8(val *int8) {
 	}
 }
 
-// Str packs the specifed string value into the receiving storage
+// Str packs the specified string value into the receiving storage
 // buffer.
 func (put *PutBuffer) Str(str string) {
 	put.vluEncode(uint64(len(str)))

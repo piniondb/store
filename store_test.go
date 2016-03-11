@@ -159,7 +159,7 @@ func storeBufToRec(data []byte) (rec all, err error) {
 		get.Uint64(&rec.Sl[j].U64)
 		get.Int8(&rec.Sl[j].S8)
 	}
-	// Retreive length of map
+	// Retrieve length of map
 	get.Uint16(&slen)
 	rec.Mp = make(map[string]string)
 	for j := uint16(0); j < slen; j++ {
@@ -238,7 +238,7 @@ func ExampleGetBuffer() {
 			get.Uint64(&newRec.Sl[j].U64)
 			get.Int8(&newRec.Sl[j].S8)
 		}
-		// Retreive length of map
+		// Retrieve length of map
 		get.Uint16(&slen)
 		newRec.Mp = make(map[string]string)
 		for j := uint16(0); j < slen; j++ {
