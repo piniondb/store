@@ -37,7 +37,7 @@ of a structure) into a byte sequence. For example,
 	data, err := put.Data()
 ```
 
-where a is of type uint32 and b is of type int64. To retrieve these values from
+Here, a is of type uint32 and b is of type int64. To retrieve these values from
 the byte slice, use a store.GetBuffer:
 
 ```
