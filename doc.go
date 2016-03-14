@@ -45,7 +45,7 @@ of a structure) into a byte sequence. For example,
 	var put store.PutBuffer
 	put.Uint32(a)
 	put.Int64(b)
-	data, err := put.Bytes()
+	data, err := put.Data()
 
 where a is of type uint32 and b is of type int64. To retrieve these values from
 the byte slice, use a store.GetBuffer:
@@ -81,7 +81,7 @@ internal error field is set. After this occurs, subsequent method calls
 typically return without performing any operations and the error state is
 retained. This error management scheme facilitates data conversion since
 individual method calls do not need to be examined for failure; it is generally
-sufficient to wait until after put.Bytes(), get.Done() or key.Bytes() is
+sufficient to wait until after put.Data(), get.Done() or key.Data() is
 called. For the same reason, if an error occurs in the calling application
 during conversion, it may be desirable for the application to transfer the
 error to the buffer instance by calling its SetError() method.

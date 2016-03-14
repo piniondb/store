@@ -170,16 +170,16 @@ func (kb *KeyBuffer) Str(str string, width uint) {
 
 // SetError permits the caller to assign an error value to the key buffer. In
 // some cases, this may simplify the construction of a key by deferring the
-// handling of an error to the point at which Bytes() is called. This method
+// handling of an error to the point at which Data() is called. This method
 // unconditionally overwrites the current internal error value.
 func (kb *KeyBuffer) SetError(err error) {
 	kb.err = err
 }
 
-// Bytes returns the slice of bytes corresponding to the stored values in the
+// Data returns the slice of bytes corresponding to the stored values in the
 // receiving key buffer. This is followed by the internal error code which will
 // be nil if each key field has been properly loaded.
-func (kb *KeyBuffer) Bytes() ([]byte, error) {
+func (kb *KeyBuffer) Data() ([]byte, error) {
 	if kb.err == nil {
 		return kb.buf.Bytes(), nil
 	}
@@ -258,6 +258,20 @@ func NewGetBuffer(data []byte) (get *GetBuffer) {
 	return
 }
 
+// Reset reinitializes a put buffer. The receiving buffer can be used as if it
+// was newly allocated.
+func (put *PutBuffer) Reset() {
+	put.buf.Reset()
+	put.err = nil
+}
+
+// Reset reinitializes a get buffer with the byte sequence specified by data.
+// The receiving buffer can be used as if it was returned from NewGetBuffer().
+func (get *GetBuffer) Reset(data []byte) {
+	get.buf.Reset()
+	_, get.err = get.buf.Write(data)
+}
+
 // Time packs the specified time.Time value into the receiving storage
 // buffer.
 func (put *PutBuffer) Time(tm time.Time) {
@@ -274,38 +288,6 @@ func (get *GetBuffer) Time(tm *time.Time) {
 		}
 	}
 }
-
-// // Int packs the specified int value into the receiving storage buffer.
-// func (put *PutBuffer) Int(val int) {
-// 	put.vlsEncode(int64(val))
-// }
-
-// // Int unpacks an int value from the receiving storage buffer.
-// func (b *GetBuffer) Int(val *int) {
-// 	if b.err == nil {
-// 		var u int64
-// 		u, b.err = vlsDecode(&b.buf)
-// 		if b.err == nil {
-// 			*val = int(u)
-// 		}
-// 	}
-// }
-
-// // Uint packs the specified uint value into the receiving storage buffer.
-// func (put *PutBuffer) Uint(val uint) {
-// 	put.vluEncode(uint64(val))
-// }
-
-// // Uint unpacks a uint value from the receiving storage buffer.
-// func (b *GetBuffer) Uint(val *uint) {
-// 	if b.err == nil {
-// 		var u uint64
-// 		u, b.err = vluDecode(&b.buf)
-// 		if b.err == nil {
-// 			*val = uint(u)
-// 		}
-// 	}
-// }
 
 // Uint64 packs the specified uint64 value into the receiving storage
 // buffer.
@@ -456,9 +438,29 @@ func (get *GetBuffer) Str(str *string) {
 	}
 }
 
+// Bytes packs the specified byte sequence into the receiving storage buffer.
+func (put *PutBuffer) Bytes(sl []byte) {
+	put.vluEncode(uint64(len(sl)))
+	if put.err == nil {
+		_, put.err = put.buf.Write(sl)
+	}
+}
+
+// Bytes unpacks a byte sequence from the receiving storage buffer.
+func (get *GetBuffer) Bytes(sl *[]byte) {
+	if get.err == nil {
+		var u uint64
+		u, get.err = vluDecode(&get.buf)
+		if get.err == nil {
+			*sl = make([]byte, u)
+			_, get.err = get.buf.Read(*sl)
+		}
+	}
+}
+
 // SetError permits the caller to assign an error value to the put buffer. In
 // some cases, this may simplify record packing by deferring the handling of an
-// error to the point at which Bytes() is called. This method unconditionally
+// error to the point at which Data() is called. This method unconditionally
 // overwrites the current internal error value.
 func (put *PutBuffer) SetError(err error) {
 	put.err = err
@@ -494,10 +496,10 @@ func (get GetBuffer) Error() error {
 	return get.err
 }
 
-// Bytes returns the currently packed fields in the form of a byte slice. The
+// Data returns the currently packed fields in the form of a byte slice. The
 // second return value is an error code that will be nil if all fields have
 // been successfully packed.
-func (put *PutBuffer) Bytes() ([]byte, error) {
+func (put *PutBuffer) Data() ([]byte, error) {
 	if put.err == nil {
 		return put.buf.Bytes(), nil
 	}

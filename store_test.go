@@ -56,6 +56,7 @@ type all struct {
 	S   string
 	T   time.Time
 	Sl  []sub
+	B   []byte
 	Mp  map[string]string
 }
 
@@ -79,6 +80,10 @@ func recPopulate(r *all) {
 	r.Sl[1].S8 = 5
 	r.Sl[2].U64 = 567
 	r.Sl[2].S8 = -8
+	r.B = make([]byte, 3)
+	r.B[0] = 42
+	r.B[1] = 41
+	r.B[2] = 40
 	r.Mp = make(map[string]string)
 	r.Mp["key1"] = "value1"
 	r.Mp["key2"] = "value2"
@@ -96,6 +101,7 @@ func (r all) String() string {
 	for _, sub := range r.Sl {
 		fmt.Fprintf(&b, "%d;%d;", sub.U64, sub.S8)
 	}
+	fmt.Fprintf(&b, "%v;", r.B)
 	var keyList []string
 	for k := range r.Mp {
 		keyList = append(keyList, k)
@@ -127,12 +133,13 @@ func storeRecToBuf(rec all) ([]byte, error) {
 		put.Uint64(sub.U64)
 		put.Int8(sub.S8)
 	}
+	put.Bytes(rec.B)
 	put.Uint16(uint16(len(rec.Mp)))
 	for k, v := range rec.Mp {
 		put.Str(k)
 		put.Str(v)
 	}
-	return put.Bytes()
+	return put.Data()
 }
 
 // storeBufToRec unpacks all record fields from a byte slice using a get buffer
@@ -159,6 +166,7 @@ func storeBufToRec(data []byte) (rec all, err error) {
 		get.Uint64(&rec.Sl[j].U64)
 		get.Int8(&rec.Sl[j].S8)
 	}
+	get.Bytes(&rec.B)
 	// Retrieve length of map
 	get.Uint16(&slen)
 	rec.Mp = make(map[string]string)
@@ -209,12 +217,13 @@ func ExampleGetBuffer() {
 		put.Uint64(sub.U64)
 		put.Int8(sub.S8)
 	}
+	put.Bytes(rec.B)
 	put.Uint16(uint16(len(rec.Mp)))
 	for k, v := range rec.Mp {
 		put.Str(k)
 		put.Str(v)
 	}
-	recBuf, err = put.Bytes()
+	recBuf, err = put.Data()
 	if err == nil {
 		var newRec all
 		var slen uint16
@@ -238,6 +247,7 @@ func ExampleGetBuffer() {
 			get.Uint64(&newRec.Sl[j].U64)
 			get.Int8(&newRec.Sl[j].S8)
 		}
+		get.Bytes(&newRec.B)
 		// Retrieve length of map
 		get.Uint16(&slen)
 		newRec.Mp = make(map[string]string)
@@ -291,7 +301,7 @@ func ExampleKeyBuffer_build() {
 	kb.Int8(-34)
 	kb.Str("example", 4)
 	kb.Str("do", 4)
-	sl, err := kb.Bytes()
+	sl, err := kb.Data()
 	if err == nil {
 		out(os.Stdout, sl)
 	} else {
@@ -339,7 +349,7 @@ func ExampleKeyBuffer_sort() {
 					kb.Uint32(r.b)
 					kb.Int8(r.c)
 					kb.Str(r.d, 8)
-					sl, err = kb.Bytes()
+					sl, err = kb.Data()
 					if err == nil {
 						keyStr = string(sl)
 						keyList = append(keyList, keyStr)
@@ -428,6 +438,43 @@ func ExampleKeyBuffer_sort() {
 	// [    10023494551 |   3450123420 |   32 | rstuvwxyz ]
 }
 
+// Test get and put buffer resets
+func TestPutBuffer_Reset(t *testing.T) {
+	var put store.PutBuffer
+	var data []byte
+	var err error
+	var val int8
+	put.Int8(-2)
+	data, err = put.Data()
+	if err == nil {
+		get := store.NewGetBuffer(data)
+		get.Int8(&val)
+		err = get.Done()
+		if err == nil {
+			if val == -2 {
+				put.Reset()
+				put.Int8(42)
+				data, err = put.Data()
+				if err == nil {
+					get.Reset(data)
+					get.Int8(&val)
+					err = get.Done()
+					if err == nil {
+						if val != 42 {
+							err = fmt.Errorf("expecting 42, got %d", val)
+						}
+					}
+				}
+			} else {
+				err = fmt.Errorf("expecting -2, got %d", val)
+			}
+		}
+	}
+	if err != nil {
+		t.Error(err)
+	}
+}
+
 // Compare JSON and store encodings
 func TestPutBuffer_Compare(t *testing.T) {
 	var rec all
@@ -475,7 +522,7 @@ func TestPutBuffer_Error(t *testing.T) {
 	var put store.PutBuffer
 	put.Int8(-2)
 	put.SetError(errTest)
-	sl, err := put.Bytes()
+	sl, err := put.Data()
 	if sl != nil || err == nil {
 		t.Fatal("PutBuffer error not reported")
 	}
@@ -498,7 +545,7 @@ func TestGetBuffer_Leftover(t *testing.T) {
 	var put store.PutBuffer
 	put.Uint32(5)
 	put.Uint32(8)
-	data, err := put.Bytes()
+	data, err := put.Data()
 	if err == nil {
 		var v uint32
 		get := store.NewGetBuffer(data)
@@ -517,7 +564,7 @@ func TestKeyBuffer_Error(t *testing.T) {
 	var kb store.KeyBuffer
 	kb.Uint32(3)
 	kb.SetError(errTest)
-	sl, err := kb.Bytes()
+	sl, err := kb.Data()
 	if sl != nil || err == nil {
 		t.Fatal("KeyBuffer error not reported")
 	}
