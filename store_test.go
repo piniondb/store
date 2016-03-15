@@ -334,7 +334,6 @@ func ExampleKeyBuffer_sort() {
 	var sl []byte
 	var err error
 	mp := make(map[string]simple)
-	// var kb store.KeyBuffer
 	var r simple
 	for _, a := range []int64{3023434, -543870, 10023494551, -3} {
 		r.a = a
@@ -345,7 +344,6 @@ func ExampleKeyBuffer_sort() {
 				for _, d := range []string{"abc", "rstuvwxyz"} {
 					var kb store.KeyBuffer
 					r.d = d
-					// kb.Reset()
 					kb.Int64(r.a)
 					kb.Uint32(r.b)
 					kb.Int8(r.c)
