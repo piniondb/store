@@ -4,6 +4,7 @@
 [![GoDoc](https://godoc.org/github.com/piniondb/store?status.svg)](https://godoc.org/github.com/piniondb/store)
 [![Build Status](https://travis-ci.org/piniondb/store.svg?branch=master)](https://travis-ci.org/piniondb/store)
 [![Coverage](http://gocover.io/_badge/github.com/piniondb/store?0)](http://gocover.io/github.com/piniondb/store)
+[![Language](https://img.shields.io/badge/language-go-lightgrey.svg)](https://golang.org/)
 
 Package store helps applications convert structured data quickly to and from
 compact byte sequences.
