@@ -82,12 +82,14 @@ type KeyBuffer struct {
 	err error
 }
 
-// Reset prepares the instance to be used as if new. Specifically, it clears
-// the internal error code and removes any buffered content.
-func (kb *KeyBuffer) Reset() {
-	kb.buf.Reset()
-	kb.err = nil
-}
+// Reset probably causes more grief with unintentionally overwritten buffers
+// than it is worth.
+// // Reset prepares the instance to be used as if new. Specifically, it clears
+// // the internal error code and removes any buffered content.
+// func (kb *KeyBuffer) Reset() {
+// 	kb.buf.Reset()
+// 	kb.err = nil
+// }
 
 func (kb *KeyBuffer) write(sl []byte) {
 	if kb.err == nil {
@@ -258,19 +260,23 @@ func NewGetBuffer(data []byte) (get *GetBuffer) {
 	return
 }
 
-// Reset reinitializes a put buffer. The receiving buffer can be used as if it
-// was newly allocated.
-func (put *PutBuffer) Reset() {
-	put.buf.Reset()
-	put.err = nil
-}
+// Reset probably causes more grief with unintentionally overwritten buffers
+// than it is worth.
+// // Reset reinitializes a put buffer. The receiving buffer can be used as if it
+// // was newly allocated.
+// func (put *PutBuffer) Reset() {
+// 	put.buf.Reset()
+// 	put.err = nil
+// }
 
-// Reset reinitializes a get buffer with the byte sequence specified by data.
-// The receiving buffer can be used as if it was returned from NewGetBuffer().
-func (get *GetBuffer) Reset(data []byte) {
-	get.buf.Reset()
-	_, get.err = get.buf.Write(data)
-}
+// Reset probably causes more grief with unintentionally overwritten buffers
+// than it is worth.
+// // Reset reinitializes a get buffer with the byte sequence specified by data.
+// // The receiving buffer can be used as if it was returned from NewGetBuffer().
+// func (get *GetBuffer) Reset(data []byte) {
+// 	get.buf.Reset()
+// 	_, get.err = get.buf.Write(data)
+// }
 
 // Time packs the specified time.Time value into the receiving storage
 // buffer.
