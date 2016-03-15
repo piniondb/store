@@ -439,43 +439,6 @@ func ExampleKeyBuffer_sort() {
 	// [    10023494551 |   3450123420 |   32 | rstuvwxyz ]
 }
 
-// Test get and put buffer resets
-// func TestPutBuffer_Reset(t *testing.T) {
-// 	var put store.PutBuffer
-// 	var data []byte
-// 	var err error
-// 	var val int8
-// 	put.Int8(-2)
-// 	data, err = put.Data()
-// 	if err == nil {
-// 		get := store.NewGetBuffer(data)
-// 		get.Int8(&val)
-// 		err = get.Done()
-// 		if err == nil {
-// 			if val == -2 {
-// 				put.Reset()
-// 				put.Int8(42)
-// 				data, err = put.Data()
-// 				if err == nil {
-// 					get.Reset(data)
-// 					get.Int8(&val)
-// 					err = get.Done()
-// 					if err == nil {
-// 						if val != 42 {
-// 							err = fmt.Errorf("expecting 42, got %d", val)
-// 						}
-// 					}
-// 				}
-// 			} else {
-// 				err = fmt.Errorf("expecting -2, got %d", val)
-// 			}
-// 		}
-// 	}
-// 	if err != nil {
-// 		t.Error(err)
-// 	}
-// }
-
 // Compare JSON and store encodings
 func TestPutBuffer_Compare(t *testing.T) {
 	var rec all
@@ -610,27 +573,3 @@ func BenchmarkStoreRoundtrip(b *testing.B) {
 		b.Error(err)
 	}
 }
-
-// // BenchmarkJSONDecode times JSON decoding of a representative type.
-// func BenchmarkJSONDecode(b *testing.B) {
-// 	var rec all
-// 	var data []byte
-// 	recPopulate(&rec)
-// 	data, _ = jsonRecToBuf(rec)
-// 	b.ResetTimer()
-// 	for j := 0; j < b.N; j++ {
-// 		jsonBufToRec(data)
-// 	}
-// }
-//
-// // BenchmarkStoreDecode times store decoding of a representative type.
-// func BenchmarkStoreDecode(b *testing.B) {
-// 	var rec all
-// 	var data []byte
-// 	recPopulate(&rec)
-// 	data, _ = storeRecToBuf(rec)
-// 	b.ResetTimer()
-// 	for j := 0; j < b.N; j++ {
-// 		storeBufToRec(data)
-// 	}
-// }

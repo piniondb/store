@@ -82,15 +82,6 @@ type KeyBuffer struct {
 	err error
 }
 
-// Reset probably causes more grief with unintentionally overwritten buffers
-// than it is worth.
-// // Reset prepares the instance to be used as if new. Specifically, it clears
-// // the internal error code and removes any buffered content.
-// func (kb *KeyBuffer) Reset() {
-// 	kb.buf.Reset()
-// 	kb.err = nil
-// }
-
 func (kb *KeyBuffer) write(sl []byte) {
 	if kb.err == nil {
 		_, kb.err = kb.buf.Write(sl)
@@ -214,28 +205,6 @@ func vlsDecode(buf *bytes.Buffer) (val int64, err error) {
 	return
 }
 
-// func vluTest() {
-// 	var val uint64
-// 	var j int
-// 	var err error
-// 	var buf bytes.Buffer
-// 	for j = 0; j < 12 && err == nil; j++ {
-// 		val = val*31 + uint64(j)
-// 		fmt.Printf("In:  %d\n", val)
-// 		err = vluEncode(&buf, val)
-// 		// fmt.Printf("%v\n", buf.Bytes())
-// 	}
-// 	for err == nil {
-// 		val, err = vluDecode(&buf)
-// 		if err == nil {
-// 			fmt.Printf("Out: %d\n", val)
-// 		}
-// 	}
-// 	if err != nil && err != io.EOF {
-// 		fmt.Println(err)
-// 	}
-// }
-
 // PutBuffer facilitates the packing of structures so that they can implement
 // the encoding.BinaryMarshaler interface. The zero value for a variable of
 // type PutBuffer is ready to use.
@@ -259,24 +228,6 @@ func NewGetBuffer(data []byte) (get *GetBuffer) {
 	_, get.err = get.buf.Write(data)
 	return
 }
-
-// Reset probably causes more grief with unintentionally overwritten buffers
-// than it is worth.
-// // Reset reinitializes a put buffer. The receiving buffer can be used as if it
-// // was newly allocated.
-// func (put *PutBuffer) Reset() {
-// 	put.buf.Reset()
-// 	put.err = nil
-// }
-
-// Reset probably causes more grief with unintentionally overwritten buffers
-// than it is worth.
-// // Reset reinitializes a get buffer with the byte sequence specified by data.
-// // The receiving buffer can be used as if it was returned from NewGetBuffer().
-// func (get *GetBuffer) Reset(data []byte) {
-// 	get.buf.Reset()
-// 	_, get.err = get.buf.Write(data)
-// }
 
 // Time packs the specified time.Time value into the receiving storage
 // buffer.
@@ -486,7 +437,9 @@ func (get *GetBuffer) SetError(err error) {
 	get.err = err
 }
 
-// Done is called to indicate that all get operations have been performed. If no error has occurred and no content remains buffered, nil is returned, otherwise an appropriate error value.
+// Done is called to indicate that all get operations have been performed. If
+// no error has occurred and no content remains buffered, nil is returned,
+// otherwise an appropriate error value.
 func (get GetBuffer) Done() error {
 	if get.err == nil {
 		if get.buf.Len() > 0 {
