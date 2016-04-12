@@ -141,6 +141,24 @@ func (kb *KeyBuffer) Int8(val int8) {
 	kb.Uint8(KeyInt8(val))
 }
 
+// Bytes stores the specified byte slice values into the receiving key buffer.
+// It will be either truncated or zero-filled to the length specified by width.
+func (kb *KeyBuffer) Bytes(sl []byte, width uint) {
+	if kb.err == nil {
+		wd := int(width)
+		ln := len(sl)
+		if ln >= int(wd) {
+			_, kb.err = kb.buf.Write(sl[:wd])
+		} else {
+			_, kb.err = kb.buf.Write(sl)
+			for ln < wd && kb.err == nil {
+				kb.err = kb.buf.WriteByte(0)
+				ln++
+			}
+		}
+	}
+}
+
 // Str stores the specified string value into the receiving key buffer.
 // It will be either truncated or space-filled to the length specified by
 // width.

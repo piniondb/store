@@ -301,6 +301,8 @@ func ExampleKeyBuffer_build() {
 	kb.Int8(-34)
 	kb.Str("example", 4)
 	kb.Str("do", 4)
+	kb.Bytes([]byte{1, 2, 3, 4, 5}, 4)
+	kb.Bytes([]byte{1, 2}, 4)
 	sl, err := kb.Data()
 	if err == nil {
 		out(os.Stdout, sl)
@@ -310,7 +312,8 @@ func ExampleKeyBuffer_build() {
 	// Output:
 	// 80 00 00 00 34 7e b2 40 00 00 03 3e 11 e7 6b c8
 	// 7f ff ff f4 3e 31 40 81 00 53 77 b1 7f ff 3c 2f
-	// b0 24 07 4b d4 5e 65 78 61 6d 64 6f 20 20
+	// b0 24 07 4b d4 5e 65 78 61 6d 64 6f 20 20 01 02
+	// 03 04 01 02 00 00
 }
 
 // type simple includes a few elementary types
