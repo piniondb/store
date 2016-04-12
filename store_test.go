@@ -193,6 +193,12 @@ func jsonBufToRec(sl []byte) (rec all, err error) {
 }
 
 // ExampleGetBuffer demonstrates basic packing and unpacking of a structure.
+// The structure used here is a menagerie of various field types intended to
+// exercise a large part of the package API. The store package does not require
+// that fields be exported (that is, have names that are capitalized). In this
+// case, the fields are exported so that the encoding/json package can operate
+// on records of this type for comparison purposes. Note that some manual
+// footwork is required to manage slices and maps.
 func ExampleGetBuffer() {
 	var rec all
 	var recBuf []byte
