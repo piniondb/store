@@ -3,8 +3,7 @@
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/piniondb/store/master/LICENSE)
 [![GoDoc](https://godoc.org/github.com/piniondb/store?status.svg)](https://godoc.org/github.com/piniondb/store)
 [![Build Status](https://travis-ci.org/piniondb/store.svg?branch=master)](https://travis-ci.org/piniondb/store)
-[![Coverage](http://gocover.io/_badge/github.com/piniondb/store?0)](http://gocover.io/github.com/piniondb/store)
-[![Language](https://img.shields.io/badge/language-go-lightgrey.svg)](https://golang.org/)
+[![Language](https://img.shields.io/badge/language-go-blue.svg)](https://golang.org/)
 
 Package store helps applications convert structured data quickly to and from
 compact byte sequences.
@@ -83,10 +82,10 @@ error to the buffer instance by calling its SetError() method.
 
 A byte sequence that is used as a key must be sortable. The store package
 provides a KeyBuffer to handle this case. Unlike the PutBuffer type, a
-KeyBuffer packs fields, including strings, into fixed length segments. Signed
-integers are handled by using excess representation in which the lowest
-negative value has all bits clear and the highest positive value has all bits
-set.
+KeyBuffer packs fields, including strings and byte slices, into fixed length
+segments. Signed integers are handled by using excess representation in which
+the lowest negative value has all bits clear and the highest positive value has
+all bits set.
 
 ##Benchmarks
 

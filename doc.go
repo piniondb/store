@@ -90,10 +90,10 @@ Keys
 
 A byte sequence that is used as a key must be sortable. The store package
 provides a KeyBuffer to handle this case. Unlike the PutBuffer and GetBuffer
-types, a KeyBuffer packs fields, including strings, into fixed length segments.
-Signed integers are handled by using excess representation in which the lowest
-negative value has all bits clear and the highest positive value has all bits
-set.
+types, a KeyBuffer packs fields, including strings and byte slices, into fixed
+length segments. Signed integers are handled by using excess representation in
+which the lowest negative value has all bits clear and the highest positive
+value has all bits set.
 
 Benchmarks
 
@@ -115,26 +115,16 @@ Contributing Changes
 
 store is a global community effort and you are invited to make it even better.
 If you have implemented a new feature or corrected a problem, please consider
-contributing your change to the project.
-
-Here are guidelines for making submissions. Your change should
+contributing your change to the project. Your pull request should
 
 • be compatible with the MIT License
 
 • be properly documented
 
-• be formatted with `go fmt`
-
 • include an example in store_test.go if appropriate
 
-• conform to the standards of golint (https://github.com/golang/lint) and
-go vet (https://godoc.org/golang.org/x/tools/cmd/vet), that is, `golint .` and
-`go vet .` should not generate any warnings
-
-• not diminish test coverage (https://blog.golang.org/cover)
-
-Pull requests (https://help.github.com/articles/using-pull-requests/) work
-nicely as a means of contributing your changes.
+Use https://goreportcard.com/report/github.com/piniondb/store to assure that no
+compliance issues have been introduced.
 
 License
 
