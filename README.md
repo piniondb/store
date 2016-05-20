@@ -53,11 +53,12 @@ otherwise making sure that the inbound and outbound value types match is up to
 the programmer. In practice, this is easily done if functions are written to
 handle the getting and putting of fields and are kept close in the code to the
 structure definition. You can enhance the generality of your code by using
-these conversion functions to implement the encoding.MarshalBinary and
-encoding.UnmarshalBinary interfaces.
+these conversion functions to implement the 
+[encoding.BinaryMarshaler](https://golang.org/pkg/encoding/#BinaryMarshaler) and
+[encoding.BinaryUnmarshaler](https://golang.org/pkg/encoding/#BinaryUnmarshaler) interfaces.
 
-See the Go documentation for more complete examples, including the conversion
-of slice and map fields.
+See the [package documentation](https://godoc.org/github.com/piniondb/store)
+for more complete examples, including the conversion of slice and map fields.
 
 ##Installation
 To install the package on your system, run
@@ -106,21 +107,15 @@ store.
 ##Contributing Changes
 store is a global community effort and you are invited to make it even better.
 If you have implemented a new feature or corrected a problem, please consider
-contributing your change to the project.
-
-Here are guidelines for making submissions. Your change should
+contributing your change to the project. Your pull request should
 
 * be compatible with the MIT License
 * be properly documented
-* be formatted with `go fmt`
 * include an example in store_test.go if appropriate
-* conform to the standards of golint (https://github.com/golang/lint) and
-go vet (https://godoc.org/golang.org/x/tools/cmd/vet), that is, `golint .` and
-`go vet .` should not generate any warnings
-* not diminish test coverage (https://blog.golang.org/cover)
 
-[Pull requests](https://help.github.com/articles/using-pull-requests/) work
-nicely as a means of contributing your changes.
+Use the 
+[Go Report Card](https://goreportcard.com/report/github.com/piniondb/store)
+site to assure that no compliance issues have been introduced.
 
 ##License
 store is released under the MIT License.

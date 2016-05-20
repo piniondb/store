@@ -61,11 +61,11 @@ otherwise making sure that the inbound and outbound value types match is up to
 the programmer. In practice, this is easily done if functions are written to
 handle the getting and putting of fields and are kept close in the code to the
 structure definition. You can enhance the generality of your code by using
-these conversion functions to implement the encoding.MarshalBinary and
-encoding.UnmarshalBinary interfaces.
+these conversion functions to implement the encoding.BinaryMarshaler and
+encoding.BinaryUnmarshaler interfaces.
 
-See the Go documentation for more complete examples, including the conversion
-of slice and map fields.
+See the package documentation for more complete examples, including the
+conversion of slice and map fields.
 
 Installation
 
