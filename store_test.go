@@ -14,7 +14,7 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package store_test
+package store
 
 import (
 	"bytes"
@@ -27,8 +27,6 @@ import (
 	"sort"
 	"testing"
 	"time"
-
-	"github.com/piniondb/store"
 )
 
 var (
@@ -116,7 +114,7 @@ func (r all) String() string {
 // storeRecToBuf packs all record fields into a byte slice using a put buffer
 // from the store package.
 func storeRecToBuf(rec all) ([]byte, error) {
-	var put store.PutBuffer
+	var put PutBuffer
 	// Pack structure into buffer
 	put.Uint64(rec.U64)
 	put.Int64(rec.S64)
@@ -147,7 +145,7 @@ func storeRecToBuf(rec all) ([]byte, error) {
 func storeBufToRec(data []byte) (rec all, err error) {
 	var slen uint16
 	var keyStr, valStr string
-	var get = store.NewGetBuffer(data)
+	var get = NewGetBuffer(data)
 	// Unpack buffer into new structure
 	get.Uint64(&rec.U64)
 	get.Int64(&rec.S64)
@@ -203,7 +201,7 @@ func ExampleGetBuffer() {
 	var rec all
 	var recBuf []byte
 	var err error
-	var put store.PutBuffer
+	var put PutBuffer
 	var originalStr, restoredStr string
 	recPopulate(&rec)
 	// Pack structure into buffer
@@ -234,7 +232,7 @@ func ExampleGetBuffer() {
 		var newRec all
 		var slen uint16
 		var keyStr, valStr string
-		var get = store.NewGetBuffer(recBuf)
+		var get = NewGetBuffer(recBuf)
 		// Unpack buffer into new structure
 		get.Uint64(&newRec.U64)
 		get.Int64(&newRec.S64)
@@ -295,7 +293,7 @@ func out(w io.Writer, sl []byte) {
 // ExampleKeyBuffer_build demonstrates building up a key composed with various
 // fixed-length comparable values.
 func ExampleKeyBuffer_build() {
-	var kb store.KeyBuffer
+	var kb KeyBuffer
 	kb.Time(timeTest)
 	kb.Uint64(3565123234760)
 	kb.Int64(-50496192383)
@@ -351,7 +349,7 @@ func ExampleKeyBuffer_sort() {
 			for _, c := range []int8{-98, 0, 32} {
 				r.c = c
 				for _, d := range []string{"abc", "rstuvwxyz"} {
-					var kb store.KeyBuffer
+					var kb KeyBuffer
 					r.d = d
 					kb.Int64(r.a)
 					kb.Uint32(r.b)
@@ -490,7 +488,7 @@ func TestPutBuffer_Compare(t *testing.T) {
 
 // Ensure that error in put buffer loading is reported
 func TestPutBuffer_Error(t *testing.T) {
-	var put store.PutBuffer
+	var put PutBuffer
 	put.Int8(-2)
 	put.SetError(errTest)
 	sl, err := put.Data()
@@ -504,7 +502,7 @@ func TestPutBuffer_Error(t *testing.T) {
 
 // Ensure that error in get buffer loading is reported
 func TestGetBuffer_Error(t *testing.T) {
-	get := store.NewGetBuffer([]byte{0, 0, 0})
+	get := NewGetBuffer([]byte{0, 0, 0})
 	get.SetError(errTest)
 	if get.Error() == nil {
 		t.Fatal("GetBuffer error not reported in call to Error()")
@@ -513,13 +511,13 @@ func TestGetBuffer_Error(t *testing.T) {
 
 // Ensure that error leftover content in buffer is reported
 func TestGetBuffer_Leftover(t *testing.T) {
-	var put store.PutBuffer
+	var put PutBuffer
 	put.Uint32(5)
 	put.Uint32(8)
 	data, err := put.Data()
 	if err == nil {
 		var v uint32
-		get := store.NewGetBuffer(data)
+		get := NewGetBuffer(data)
 		get.Uint32(&v)
 		err = get.Done()
 		if err == nil {
@@ -532,7 +530,7 @@ func TestGetBuffer_Leftover(t *testing.T) {
 
 // Ensure that error in key buffer loading is reported
 func TestKeyBuffer_Error(t *testing.T) {
-	var kb store.KeyBuffer
+	var kb KeyBuffer
 	kb.Uint32(3)
 	kb.SetError(errTest)
 	sl, err := kb.Data()
