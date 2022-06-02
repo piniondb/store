@@ -1,7 +1,7 @@
 # store
 
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/piniondb/store/master/LICENSE)
-[![GoDoc](https://godoc.org/github.com/piniondb/store?status.svg)](https://godoc.org/github.com/piniondb/store)
+[![GoDoc](https://pkg.go.dev/github.com/piniondb/store)](https://pkg.go.dev/github.com/piniondb/store)
 [![Build Status](https://travis-ci.org/piniondb/store.svg?branch=master)](https://travis-ci.org/piniondb/store)
 [![Language](https://img.shields.io/badge/language-go-blue.svg)](https://golang.org/)
 
@@ -74,10 +74,12 @@ internal error field is set. After this occurs, subsequent method calls
 typically return without performing any operations and the error state is
 retained. This error management scheme facilitates data conversion since
 individual method calls do not need to be examined for failure; it is generally
-sufficient to wait until after put.Data(), get.Done() or key.Data() is
-called. For the same reason, if an error occurs in the calling application
-during conversion, it may be desirable for the application to transfer the
-error to the buffer instance by calling its SetError() method.
+sufficient to wait until after put.Data(), get.Done() or key.Data() is called.
+For the same reason, if an error occurs in the calling application during
+conversion, it may simplify matters for the application to transfer the error
+to the buffer instance by calling its SetError() method. This way, the
+application can reduce the number of places at which an error needs to be
+explicitly checked.
 
 ## Keys
 
