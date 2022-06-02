@@ -1,7 +1,7 @@
 # store
 
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/piniondb/store/master/LICENSE)
-[![GoDoc](https://pkg.go.dev/github.com/piniondb/store)](https://pkg.go.dev/github.com/piniondb/store)
+[![GoDoc](https://img.shields.io/badge/documentation-store-blue.svg)](https://pkg.go.dev/github.com/piniondb/store)
 [![Build Status](https://travis-ci.org/piniondb/store.svg?branch=master)](https://travis-ci.org/piniondb/store)
 [![Language](https://img.shields.io/badge/language-go-blue.svg)](https://golang.org/)
 
